@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Optional;
-
 @Service
 @Slf4j
 public class UserService {
@@ -24,13 +22,13 @@ public class UserService {
 
     public UserDepartment getUserWithDepartment(long userId) {
         log.info("Inside getUserWithDepartment method");
-        Optional<User> optionalUser = userRepository.findById(userId);
-        return optionalUser.map(this::findDepartmentOfUser).orElseGet(UserDepartment::new);
+        return userRepository.findById(userId)
+                .map(this::findDepartmentOfUser).orElseGet(UserDepartment::new);
     }
 
     private UserDepartment findDepartmentOfUser(User user) {
         log.info("Inside findDepartmentOfUser method");
-
+        log.info("Department id is " + user.getDepartmentId());
         Department department = WebClient.create("http://localhost:9000/departments/")
                 .get()
                 .uri(uriBuilder -> uriBuilder.path(String.valueOf(user.getDepartmentId())).build())
