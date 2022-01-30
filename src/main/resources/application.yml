@@ -1,6 +1,2 @@
-server:
-  port: 9002
-
-spring:
-  application:
-    name: user-service
+server.port: 9002
+spring.application.name: user-service
